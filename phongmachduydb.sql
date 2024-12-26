@@ -329,7 +329,7 @@ INSERT INTO `user` (`fullname`, `username`, `password`, `avatar`, `gender`, `bir
 ('Duy nurse 1', 'duynu1', '61051a26c12b172c76a1e30881e2d93d', '', 'Male', '0000-00-00', 'mduy2k3@gmail.com', '0000000000', 1, '2024-12-13 07:53:27', 'Nurse', 22),
 ('Duy Doctor 1', 'duydoc2', 'c00835d6da909fb9622cd87600a630cd', '', 'Female', '2023-05-23', 'mduy2k3@gmail.com', '0000000000', 1, '2024-12-23 01:10:19', 'Nurse', 23),
 ('Duy Doctor 1', '0000000000', 'e10adc3949ba59abbe56e057f20f883e', NULL, 'Male', '2023-07-06', 'michealduy2003@gmail.com', '0000000000', 1, '2024-12-23 01:10:19', 'Customer', 24),
-('Duy Doctor 1', '0962517550', 'e10adc3949ba59abbe56e057f20f883e', NULL, 'Male', '2024-12-04', 'michealduy2003@gmail.com', '0962517550', 1, '2024-12-23 01:40:30', 'Customer', 25),
+('Duy Doctor 1', '0966666666', 'e10adc3949ba59abbe56e057f20f883e', NULL, 'Male', '2024-12-04', 'michealduy2003@gmail.com', '0966666666', 1, '2024-12-23 01:40:30', 'Customer', 25),
 ('Duy Doctor 1', '0123456789', 'e10adc3949ba59abbe56e057f20f883e', NULL, 'Male', '2024-12-18', 'michealduy2003@gmail.com', '0123456789', 1, '2024-12-23 09:12:30', 'Customer', 26),
 ('Duy nurse 1', '0898443499', 'e10adc3949ba59abbe56e057f20f883e', NULL, 'Male', '2024-12-17', 'michealduy2003@gmail.com', '0898443499', 1, '2024-12-23 09:12:30', 'Customer', 27),
 ('Duy nurse 00', '0898443498', 'e10adc3949ba59abbe56e057f20f883e', NULL, 'Male', '2024-12-12', 'michealduy2003@gmail.com', '0898443498', 1, '2024-12-23 09:12:30', 'Customer', 31),
