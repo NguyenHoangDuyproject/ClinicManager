@@ -1,0 +1,142 @@
+{% extends 'admin/index.html' %}
+
+{% block body %}
+<style>
+    .table-scroll {
+        overflow-y: auto;
+        max-height: 600px;
+    }
+</style>
+
+{% if success_msg %}
+<div class="alert alert-info container mx-auto mb-4">
+    {{ success_msg }}
+</div>
+{% endif %}
+{% if err_msg %}
+<div class="alert alert-danger col-12">
+    {{ err_msg }}
+</div>
+{% endif %}
+<div class="page-nav no-margin">
+
+    <h1 class="text-primary">Xem và Hoàn thành lịch khám </h1>
+</div>
+<div class="container mt-4">
+    <form action="" method="GET" class="row">
+        <div class="form-group row col-9">
+            <label for="examinationDate" class="col-2 mt-2">Ngày khám:</label>
+            <input type="date"
+                   class="form-control col-10"
+                   id="examinationDate"
+                   name="examination-date"
+            >
+        </div>
+        <div class="col-3">
+            <button class="btn btn-info">Xem danh sách khám</button>
+        </div>
+    </form>
+    {% if registration_data %}
+    <div class="table-scroll">
+        <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Họ tên</th>
+            <th>Số điện thoại</th>
+            <th>Ngày sinh</th>
+            <th>Ngày khám</th>
+            <th>Hành Động</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for record in registration_data %}
+        <tr>
+            <td>{{ record.fullname }}</td>
+            <td>{{ record.phone }}</td>
+            <td>{{ record.birthday }}</td>
+            <td>{{ record.examination_date }}</td>
+            <td>
+                <button
+                        data-id="{{ record.user_id }}"
+                        data-record-id="{{ record.id }}"
+                        {% if examination_date> today or all_confirmed %}
+                    disabled
+                    class="btn btn-dark detail-btn delete"
+                    {% else %}
+                    class="btn btn-danger detail-btn delete"
+                    {% endif %}
+                    >
+                    Hủy lịch khám
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    {% if examination_date >= today %}
+    {% if all_confirmed  %}
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Đã xác nhận lịch khám </h4>
+    </div>
+    {% else %}
+    <form action="" method="POST" class="row d-flex justify-content-end">
+        <input type="hidden" value="{{ examination_date }}" name="complete-date"/>
+        <button type="submit" class="btn btn-info detail-btn justify-end ">
+            Hoàn thành lịch khám
+        </button>
+    </form>
+    {% endif %}
+    {% endif %}
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Ngày {{ examination_date.strftime('%d-%m-%Y') }} chưa có lịch đặt khám bệnh
+    </div>
+    {% endif %}
+
+    <script>
+        function setTodayDate() {
+            document.getElementById("examinationDate").valueAsDate = new Date('{{examination_date}}');
+        }
+        function cancelExamination(examId) {
+            console.log("Hủy lịch khám có ID:", examId);
+            const url = `/delete-exam/${examId}`;
+            // Sending a DELETE request using fetch
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+            console.log(response);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log("Examination with ID", examId, "deleted successfully");
+                location.reload()
+            })
+            .catch(error => {
+                console.error("Error deleting examination:", error.message);
+            });
+        }
+
+        window.onload = () => {
+            setTodayDate();
+            {% if form_data %}
+            document.querySelector("#fullName").value = '{{ form_data.get('fullname')}}'
+            document.querySelector("#email").value = '{{ form_data.get('email')}}'
+            document.querySelector("#phone").value = '{{ form_data.get('phone')}}'
+            document.querySelector("#appointmentDate").value = '{{form_data.get('appointmentDate')}}'
+            document.querySelector("#birthday").value = '{{form_data.get('birthday')}}'
+            {% endif %}
+        }
+        document.querySelectorAll('td button.delete')
+                .forEach(btn => btn.addEventListener('click', function() {
+                    cancelExamination(this.getAttribute('data-record-id'))
+                }));
+
+    </script>
+</div>
+{% endblock %}

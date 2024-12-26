@@ -1,0 +1,86 @@
+{% extends 'admin/index.html' %}
+
+{% block body %}
+<style>
+    .table-scroll {
+        width: 100%;
+        overflow-y: auto;
+        max-height: 600px;
+        max-width: 100%;
+    }
+    .table-scroll table {
+        width: 100%;
+    }
+    .table-scroll th, .table-scroll td {
+        white-space: nowrap;
+    }
+
+    .thead-background {
+        background-color: #f39c12;
+        border-color: #e67e22;
+    }
+
+    .page-nav.no-margin {
+        margin-bottom: 0;
+    }
+
+
+</style>
+
+{% if success_msg %}
+<div class="alert alert-info container mx-auto mb-4">
+    {{ success_msg }}
+</div>
+{% endif %}
+{% if err_msg %}
+<div class="alert alert-danger col-12">
+    {{ err_msg }}
+</div>
+{% endif %}
+
+<div class="page-nav no-margin">
+
+    <h1 class="text-primary">Chi tiết hóa đơn khám </h1>
+
+</div>
+
+<div>
+    <div class="table-scroll">
+        <table class="table">
+            <thead class="thead-background">
+            <tr>
+                <th scope="col">Tên thuóc</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Cách dùng</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Thành tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for de in medicine_details %}
+            <tr>
+                <td>{{ de.name }}</td>
+                <td>{{ de.quantity }}</td>
+                <td>{{ de.direction}}</td>
+                <td>{{ de.price }}</td>
+                <td>{{ de.total_cost }}</td>
+                <td>{{ de.total_amount }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            <thead>
+            <tr>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">{{total_amount}}</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<script>
+
+</script>
+{% endblock %}

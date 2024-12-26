@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title_page %}
+        Phòng mạch của Duy - Trang chủ
+        {% endblock %}
+    </title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/fav.jpg') }}">
+
+    {% block css %}
+    {% include 'layout/css.html' %}
+    {% endblock %}
+</head>
+<body>
+    {% block header %}
+        {% include 'layout/header.html' %}
+    {% endblock %}
+
+    {% block content required %}
+
+    {% endblock %}
+
+    {% block footer %}
+        {% include 'layout/footer.html'  %}
+    {% endblock %}
+    {% block js %}
+        {% include 'layout/js.html' %}
+    {% endblock %}
+</body>
+</html>

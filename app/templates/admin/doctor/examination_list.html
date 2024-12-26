@@ -1,0 +1,61 @@
+{% extends 'admin/index.html' %}
+
+{% block body %}
+<style>
+    .table-scroll {
+        overflow-y: auto;
+        max-height: 600px;
+    }
+
+</style>
+{% if success_msg %}
+<div class="alert alert-info container mx-auto mb-4">
+    {{ success_msg }}
+</div>
+{% endif %}
+{% if err_msg %}
+<div class="alert alert-danger col-12">
+    {{ err_msg }}
+</div>
+{% endif %}
+<div class="page-nav no-margin">
+    <h1 class="text-primary">Danh sách khám ngày hôm nay </h1>
+</div>
+<div class="container mt-4">
+    <div class="table-scroll">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Họ tên</th>
+                <th>Số điện thoại</th>
+                <th>Ngày sinh</th>
+                <th>Ngày khám</th>
+                <th>Hành Động</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for record in examination_data %}
+            <tr>
+                <td>{{ record.fullname }}</td>
+                <td>{{ record.phone }}</td>
+                <td>{{ record.birthday }}</td>
+                <td>{{ record.examination_date }}</td>
+                <td>
+                    <a class="btn btn-info detail-btn "
+                       href="/nurse/examination/{{ record.id }}"
+                    >
+                        Tạo phiếu khám
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function setTodayDate() {
+        document.getElementById("examinationDate").valueAsDate = new Date('{{examination_date}}');
+    }
+</script>
+{% endblock %}

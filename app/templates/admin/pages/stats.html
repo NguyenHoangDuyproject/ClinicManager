@@ -1,0 +1,232 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<h1 class="text-center text-info">THÔNG KÊ BÁO CÁO</h1>
+<form action="" class="row" method="GET">
+    <div class="form-group col-3">
+        <label for="month">Tháng</label>
+        <select id="month" name="month" class="form-control"></select>
+    </div>
+    <div class="form-group col-3">
+        <label for="year">Năm</label>
+        <select id="year" name="year" class="form-control"></select>
+    </div>
+    <button id="Btn" type="submit" class="form-group col-2 btn btn-primary">
+        Xem báo cáo
+    </button>
+</form>
+<div class="row pb-12">
+    <div class="col-md-6 col-xs-12">
+        <h3>Doanh thu và Tần suất khám</h3>
+        <table class="table">
+            <tr>
+                <th>Tháng</th>
+                <th>Doanh thu</th>
+                <th>Tần suất khám</th>
+            </tr>
+            {% for month, revenue in revenue_stats %}
+            <tr>
+                <td>{{ month }}</td>
+                <td>{{ revenue }} VNĐ</td>
+                <td>{{ dict(examination_frequency).get(month, 0) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-6 col-xs-6">
+        <h3>Biểu đồ Doanh thu theo năm</h3>
+        <canvas id="revenueChart"></canvas>
+    </div>
+
+</div>
+<!-- Biểu đồ Doanh thu theo tháng -->
+<div class="row">
+     <div class="col-md-12 col-xs-12">
+        <h3>Thống kê tần suất sử dụng thuốc tháng {{selected_month}}</h3>
+        <table class="table">
+            <tr>
+                <th>Tên thuốc</th>
+                <th>Số lần sử dụng</th>
+                <th>Số lượng</th>
+            </tr>
+            {% for name, count, quantity in medicine_usage_stats %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ count }}</td>
+                <td>{{ quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-6 col-xs-6">
+        <h3>Biểu đồ sử dụng thuốc tháng {{selected_month}}</h3>
+        <canvas id="countMedicineChart"></canvas>
+    </div>
+    <div class="col-md-6 col-xs-6">
+        <h3>Biểu đồ số lượng thuốc tháng {{selected_month}}</h3>
+        <canvas id="quantityMedicineChart"></canvas>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const monthSelect = document.getElementById("month");
+    const yearSelect = document.getElementById("year");
+    const selectedMonth = {{ selected_month }};
+    for (let i = 1; i <= 12; i++) {
+        const option = document.createElement("option");
+        if (selectedMonth == i)
+            option.selected = true;
+        option.value = i;
+        option.text = i;
+        monthSelect.appendChild(option);
+    }
+    const currentYear = new Date().getFullYear();
+    const selectedYear = {{ selected_year }};
+    for (let i = currentYear - 10; i <= currentYear; i++) {
+        const option = document.createElement("option");
+        if (selectedYear == i)
+            option.selected = true;
+        option.value = i;
+        option.text = i;
+        yearSelect.appendChild(option);
+    }
+    window.onload = function() {
+        const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+        let revenueData = [];
+        let revenueLabels = [];
+        // Khởi tạo dữ liệu doanh thu cho mỗi tháng với giá trị mặc định là 0
+        let monthlyRevenue = Array(12).fill(0);
+        {% for month, revenue in revenue_stats %}
+          monthlyRevenue[{{ month }} - 1] = {{ revenue }};
+        {% endfor %}
+        // Tạo labels và dữ liệu cho biểu đồ
+        for (let i = 0; i < 12; i++) {
+          revenueLabels.push('Tháng ' + (i + 1));
+          revenueData.push(monthlyRevenue[i]);
+        }
+        new Chart(ctxRevenue, {
+          type: 'bar',
+          data: {
+            labels: revenueLabels,
+            datasets: [{
+              label: 'Doanh thu theo tháng',
+              data: revenueData,
+              borderWidth: 1,
+              backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)',
+              'rgba(102, 205, 170, 0.2)',
+              'rgba(255, 178, 102, 0.2)',
+              'rgba(255, 205, 127, 0.2)',
+               ],
+               borderColor: 'rgb(75, 192, 192)',
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+// thống kê thuốc
+        const medicine = document.getElementById('countMedicineChart').getContext('2d');
+        let countMedicineData = [];
+        let medicineLabels = [];
+        let quantityMedicineData = [];
+        // Khởi tạo dữ liệu doanh thu cho mỗi tháng với giá trị mặc định là 0
+        let nameMedicine = [];
+        let countMedicine = [];
+        let quantityMedicine = [];
+        {% for name, count, quantity in medicine_usage_stats %}
+          nameMedicine.push('{{ name }}');
+          countMedicine.push({{ count }});
+          quantityMedicine.push({{ quantity }});
+        {% endfor %}
+        // Tạo labels và dữ liệu cho biểu đồ
+        for (let i = 0; i < nameMedicine.length; i++) {
+          medicineLabels.push(nameMedicine[i]);
+          countMedicineData.push(countMedicine[i]);
+          quantityMedicineData.push(quantityMedicine[i]);
+        }
+        new Chart(medicine, {
+          type: 'doughnut',
+          data: {
+            labels: medicineLabels,
+            datasets: [{
+              label: 'Sử dụng thuốc theo tháng',
+              data: countMedicineData,
+              borderWidth: 1,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)',
+                'rgba(102, 205, 170, 0.2)',
+                'rgba(255, 178, 102, 0.2)',
+                'rgba(255, 205, 127, 0.2)',
+              ],
+              borderColor: 'rgb(75, 192, 192)',
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const quantityMedicineChart  = document.getElementById('quantityMedicineChart').getContext('2d');
+        new Chart(quantityMedicineChart , {
+          type: 'doughnut',
+          data: {
+            labels: medicineLabels,
+            datasets: [{
+              label: 'Sử dụng thuốc theo tháng',
+              data: quantityMedicineData,
+              borderWidth: 1,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)',
+                'rgba(102, 205, 170, 0.2)',
+                'rgba(255, 178, 102, 0.2)',
+                'rgba(255, 205, 127, 0.2)',
+              ],
+              borderColor: 'rgb(75, 192, 192)',
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+  }
+
+
+
+</script>
+
+
+{% endblock %}

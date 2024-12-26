@@ -1,0 +1,247 @@
+{% extends 'admin/index.html' %} {% block body %}
+<style>
+  .table-scroll {
+    overflow-y: auto;
+    max-height: 200px;
+  }
+
+
+</style>
+
+{% if success_msg %}
+<div class="alert alert-info container mx-auto mb-4">{{ success_msg }}</div>
+{% endif %} {% if err_msg %}
+<div class="alert alert-danger col-12">{{ err_msg }}</div>
+{% endif %}
+<div class="page-nav no-margin">
+    <h1 class="text-primary">Lập phiếu khám</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <input type="hidden" id="patient_id" value="{{ registration_form.user.id }}"/>
+        <input type="hidden" id="form_id" value="{{ registration_form.id }}"/>
+
+        <div class="form-group col-3">
+            <label for="fullName">Họ và Tên</label>
+            <input
+                    type="text"
+                    class="form-control col-12"
+                    id="fullName"
+                    name="fullname"
+                    value="{{ registration_form.user.fullname }}"
+                    disabled
+            />
+        </div>
+        <div class="form-group col-2">
+            <label for="birthday">Ngày Sinh</label>
+            <input
+                    type="date"
+                    class="form-control col-12"
+                    id="birthday"
+                    name="birthday"
+                    value="{{ registration_form.user.birthday }}"
+                    disabled
+            />
+        </div>
+        <div class="form-group col-2">
+            <label for="appointmentDate">Ngày Khám</label>
+            <input
+                    type="date"
+                    class="form-control"
+                    id="appointmentDate"
+                    name="appointmentDate"
+                    disabled
+            />
+        </div>
+        <div class="form-group col-2">
+            <label for="phone">Số Điện Thoại</label>
+            <input
+                    type="text"
+                    class="form-control col-12"
+                    id="phone"
+                    placeholder="Nhập số điện thoại"
+                    name="phone"
+                    value="{{ registration_form.user.phone }}"
+                    disabled
+            />
+        </div>
+        <div class="col-3 mt-4">
+            <button type="" id="historyBtn" class="btn btn-primary">Lịch sử khám</button>
+        </div>
+    </div>
+    <div id="history" style="display: none">
+        <h3>Lịch sử khám</h3>
+        <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Ngày khám</th>
+            <th>Triệu chứng</th>
+            <th>Chuẩn đoán</th>
+        </tr>
+        </thead>
+        <tbody id="tbodyHistory">
+        </tbody>
+    </table>
+    </div>
+    <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-12">
+                <label for="symptom">Triệu chứng</label>
+                <input type="text"
+                       class="form-control col-12"
+                       id="symptom"
+                       name="symptom"
+                >
+            </div>
+            <div class="form-group col-12">
+                <label for="diseasePrediction">Chuẩn đoán</label>
+                <input type="text"
+                       class="form-control col-12"
+                       id="diseasePrediction"
+                       name="diseasePrediction"
+                >
+            </div>
+            <div class="col-md-6 mb-3">
+                <input
+                        type="text"
+                        class="form-control"
+                        id="medicineName"
+                        name="medicineName"
+                        placeholder="Nhập tên thuốc"
+                />
+            </div>
+            <div class="col-md-6 mb-3">
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-3">
+                <label for="medicine">Tên thuốc</label>
+                <select id="medicine" name="medicine" class="form-control"></select>
+            </div>
+            <div class="form-group col-2">
+                <label for="quantity">Số lượng</label>
+                <input type="text" class="form-control" id="quantity" name="quantity"/>
+            </div>
+            <div class="form-group col-1">
+                <label for="quantity">Đơn vị</label>
+                <input type="text" class="form-control" id="unit" name="unit" disabled/>
+            </div>
+            <div class="form-group col-6">
+                <label for="direction">Cách dùng</label>
+                <input
+                        disabled
+                        type="text"
+                        class="form-control"
+                        id="direction"
+                        name="direction"
+                />
+            </div>
+        </div>
+        <button id="addBtn" type="button" class="form-group col-2 btn btn-primary">
+            Thêm thuốc
+        </button>
+    </div>
+</div>
+<div class="container mt-4">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Thuốc</th>
+            <th>Số lượng</th>
+            <th>Đơn vị</th>
+            <th>Cách dùng</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" id="saveBtn">Lưu phiếu</button>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js')}}"></script>
+<script>
+    var medicinesArray = [{ id: 0, name: "Chọn loại thuốc", direction: "", unit: "" }];
+    function setTodayDate() {
+      document.getElementById("appointmentDate").valueAsDate = new Date();
+    }
+    setTodayDate()
+    function renderMedicineToSelect(medicines = [], selectedMedicineIds = []) {
+        const html = medicines.filter(m => !selectedMedicineIds.includes(m.id))
+                            .map(m => `<option value="${ m.id }">${ m.name }</option>`)
+                            .join('')
+        document.getElementById('medicine').innerHTML = html;
+    }
+
+    function getPriceFromId(id) {
+        return medicinesArray.filter(m => m.id == id)[0].price;
+    }
+    function getNameFromId(id) {
+        return medicinesArray.filter(m => m.id == id)[0].name;
+    }
+    function getDirectionFromId(id) {
+        return medicinesArray.filter(m => m.id == id)[0].direction;
+    }
+    function getUnitFromId(id) {
+        return medicinesArray.filter(m => m.id == id)[0].unit;
+    }
+
+    window.onload = () => {
+    // Lặp lại các loại thuốc và thêm vào mảng
+        {% for medicine in medicines %}
+            var medicineData = {
+                id: {{ medicine.id }},
+                name: "{{ medicine.name }}",
+                price: {{ medicine.price }},
+                direction: "{{ medicine.direction }}",
+                unit: "{{ medicine.unit.name }}"
+            };
+            medicinesArray.push(medicineData);
+        {% endfor %}
+        renderMedicineToSelect(medicinesArray)
+    }
+
+
+    document.getElementById('addBtn').onclick = () => {
+        const id =  document.getElementById('medicine').value;
+        if (id <= 0) {
+            alert("Vui lòng chọn thuốc");
+            return;
+        }
+        const quantity = parseInt(document.getElementById('quantity').value);
+        if (quantity <= 0) {
+            alert("Vui lòng nhập số lượng > 0");
+            return;
+        }
+        const name = getNameFromId(id);
+        const direction = getDirectionFromId(id);
+        const unit = getUnitFromId(id);
+        addMedicineToBill(id, getPriceFromId(id), quantity, name, direction, unit);
+    }
+    document.getElementById('medicine').onchange = () => {
+        const id =  document.getElementById('medicine').value;
+        const medicine = medicinesArray.filter(m => m.id == id)[0];
+        document.getElementById('quantity').value = 1;
+        document.getElementById('direction').value = medicine.direction;
+        document.getElementById('unit').value = medicine.unit;
+    }
+    document.getElementById('saveBtn').onclick = () => {
+        const symptom =  document.getElementById('symptom').value;
+        const prediction =  document.getElementById('diseasePrediction').value;
+        const patient_id =  document.getElementById('patient_id').value;
+        const form_id =  document.getElementById('form_id').value;
+        saveMedicineBill(symptom, prediction, parseInt(patient_id), parseInt(form_id));
+    }
+
+    document.getElementById('historyBtn').onclick = () => {
+        getHistoryById({{ registration_form.user.id }})
+        document.getElementById('history').style.display = 'block';
+    }
+
+    document.getElementById('medicineName').onchange = function() {
+        const filteredMedicines = medicinesArray.filter(m => m.name.toLowerCase().includes(this.value.toLowerCase()));
+        renderMedicineToSelect(filteredMedicines)
+    }
+</script>
+{% endblock %}

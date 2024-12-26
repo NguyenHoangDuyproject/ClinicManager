@@ -1,0 +1,71 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+
+<div class="page-nav no-margin row">
+    <div class="container">
+        <div class="row">
+            <h2>Our Gallery</h2>
+            <ul>
+                <li><a href="/"><i class="fas fa-home"></i>Trang chủ</a></li>
+                <li><i class="fas fa-angle-double-right"></i>Liên hệ</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top:0px;" class="row no-margin">
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.764168540523!2d106.6880892108423!3d10.675404689423335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31753100099ce9ed%3A0xdb6079801f0735ea!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBN4bufIFRQLiBI4buTIENow60gTWluaCAoY8ahIHPhu58gMyk!5e0!3m2!1svi!2s!4v1735034348399!5m2!1svi!2s"
+        width="100%"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
+
+<div class="row contact-rooo no-margin">
+    <div class="container">
+        <div class="row">
+            <div style="padding:20px" class="col-sm-6">
+                <h2 style="font-size:18px">Liên hệ</h2>
+                <div class="row">
+                    <div style="padding-top:10px;" class="col-sm-3"><label>Họ tên :</label></div>
+                    <div class="col-sm-8"><input type="text" placeholder="Nhập tên" name="name"
+                                                 class="form-control input-sm"></div>
+                </div>
+                <div style="margin-top:10px;" class="row">
+                    <div style="padding-top:10px;" class="col-sm-3"><label>Email :</label></div>
+                    <div class="col-sm-8"><input type="text" name="name" placeholder="Nhập email"
+                                                 class="form-control input-sm"></div>
+                </div>
+                <div style="margin-top:10px;" class="row">
+                    <div style="padding-top:10px;" class="col-sm-3"><label>Số điện thoai :</label></div>
+                    <div class="col-sm-8"><input type="text" name="name" placeholder="Nhập số điện thoại"
+                                                 class="form-control input-sm"></div>
+                </div>
+                <div style="margin-top:10px;" class="row">
+                    <div style="padding-top:10px;" class="col-sm-3"><label>Ý kiến của bạn :</label></div>
+                    <div class="col-sm-8">
+                        <textarea rows="5" placeholder="Nhập ý kiến " class="form-control input-sm"></textarea>
+                    </div>
+                </div>
+                <div style="margin-top:10px;" class="row">
+                    <div style="padding-top:10px;" class="col-sm-3"><label></label></div>
+                    <div class="col-sm-8">
+                        <button class="btn btn-danger btn-sm">Gửi</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div style="margin:50px" class="serv">
+                    <h2 style="margin-top:10px;">Địa chỉ</h2>
+                    Email:duynguyenpro2711@gmail.com<br>
+                    Website:http://localhost:5000<br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

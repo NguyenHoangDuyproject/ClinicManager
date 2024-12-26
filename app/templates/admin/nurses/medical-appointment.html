@@ -1,0 +1,127 @@
+{% extends 'admin/index.html' %}
+
+{% block body %}
+{% if success_msg %}
+<div class="alert alert-success container mx-auto mb-4">
+    {{ success_msg }}
+</div>
+{% endif %}
+{% if err_msg %}
+<div class="alert alert-danger col-12">
+    {{ err_msg }}
+</div>
+{% endif %}
+<div class="page-nav no-margin">
+    <h1 class="text-primary">Đăng Ký Khám Bệnh</h1>
+</div>
+<div class="container">
+    <form action="" method="post"  class="row">
+        <div class="form-group col-12">
+            <label for="fullName">Họ và Tên</label>
+            <input type="text"
+                   class="form-control col-12"
+                   id="fullName"
+                   name="fullname"
+                   placeholder="Nhập họ và tên"
+                   {% if is_fullname_error %}
+                    autofocus
+                   {% endif %}
+            >
+        </div>
+        <div class="form-group col-12">
+            <label for="birthday">Ngày Sinh</label>
+            <input type="date"
+                   class="form-control col-12"
+                   id="birthday"
+                   name="birthday"
+                   {% if is_birthday_error %}
+                    autofocus
+                   {% endif %}
+            >
+        </div>
+        <div class="input-group col-6">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="radio"
+                       name="gender"
+                       id="nam"
+                       checked
+                       value="Male"
+                >
+            </div>
+        </div>
+        <label type="text"
+               class="form-control"
+               for="nam">Nam
+        </label>
+    </div>
+        <div class="input-group col-6">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="radio"
+                       name="gender"
+                       id="nu"
+                       checked
+                       value="Female"
+                >
+            </div>
+        </div>
+        <label type="text"
+               class="form-control"
+               for="nu">Nữ
+        </label>
+    </div>
+        <div class="form-group col-12">
+            <label for="email">Email</label>
+            <input type="email"
+                   class="form-control "
+                   id="email"
+                   name="email"
+                   placeholder="Nhập email">
+        </div>
+        <div class="form-group col-12">
+            <label for="phone">Số Điện Thoại</label>
+            <input type="text"
+                   class="form-control col-12"
+                   id="phone"
+                   placeholder="Nhập số điện thoại"
+                   name="phone"
+                   {% if is_phone_error %}
+                    autofocus
+                   {% endif %}
+            >
+        </div>
+        <div class="form-group col-12">
+            <label for="appointmentDate">Ngày Khám</label>
+            <input
+                    type="date"
+                    class="form-control"
+                    id="appointmentDate"
+                    name="appointmentDate" >
+        </div>
+
+        <button type="submit" class="btn btn-primary">Đăng Ký</button>
+    </form>
+    <script>
+        function setTodayDate() {
+            document.getElementById("appointmentDate").valueAsDate = new Date();
+        }
+        window.onload = () => {
+            setTodayDate();
+            {% if form_data %}
+            document.querySelector("#fullName").value = '{{ form_data.get('fullname')}}'
+            document.querySelector("#email").value = '{{ form_data.get('email')}}'
+            document.querySelector("#phone").value = '{{ form_data.get('phone')}}'
+            document.querySelector("#appointmentDate").value = '{{form_data.get('appointmentDate')}}'
+            document.querySelector("#birthday").value = '{{ form_data.get('birthday') }}'
+
+
+            {% endif %}
+        }
+        document.querySelector('#today').addEventListener('change', () => {
+            document.querySelector('#appointmentDate').readOnly = true;
+            setTodayDate();
+        })
+    </script>
+</div>
+{% endblock %}

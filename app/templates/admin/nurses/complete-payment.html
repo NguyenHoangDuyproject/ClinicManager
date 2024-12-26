@@ -1,0 +1,111 @@
+{% extends 'admin/index.html' %}
+
+{% block body %}
+<style>
+    .table-scroll {
+        width: 100%;
+        overflow-y: auto;
+        max-height: 600px;
+    }
+
+    .table-scroll table {
+        width: 100%;
+    }
+
+    .table-scroll th, .table-scroll td {
+        white-space: nowrap;
+    }
+
+    .thead-background {
+        background-color: #f39c12;
+        border-color: #e67e22;
+    }
+
+    .page-nav.no-margin {
+        margin-bottom: 0;
+    }
+</style>
+
+{% if success_msg %}
+<div class="alert alert-info container mx-auto mb-4">
+    {{ success_msg }}
+</div>
+{% endif %}
+{% if err_msg %}
+<div class="alert alert-danger col-12">
+    {{ err_msg }}
+</div>
+{% endif %}
+
+<div class="page-nav no-margin">
+
+    <h1 class="text-primary">Thanh toán hóa đơn khám </h1>
+
+</div>
+
+<div class="container">
+    <form method="get" action="">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" id="phoneSearch" name="phone" placeholder="Nhập số điện thoại">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-scroll">
+        <table class="table">
+            <thead class="thead-background">
+            <tr>
+                <th scope="col">Họ tên</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Tiền khám</th>
+                <th scope="col">Tiền Thuốc</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ex in examination_bills %}
+            <tr>
+                <td>{{ ex.patient_name }}</td>
+                <td>{{ ex.phone }}</td>
+                <td>{{ ex.examination_cost}}</td>
+                <td>{{ ex.medicine_cost }}</td>
+                <td>{{ ex.total_cost }}</td>
+                <td>
+                    <div class="d-flex">
+                        <form action="" method="POST" class="">
+                            <input type="hidden" value="{{ ex.id }}" name="complete-payment"/>
+                            <button
+                                    {% if ex.paid == True %}
+                                    disabled
+                                    class="btn btn-dark payment"
+                                    {% else %}
+                                    class="btn btn-success payment"
+                                    {% endif %}
+                            >
+                                Thanh toán
+                            </button>
+                        </form>
+
+                        <a class="btn btn-danger detail-btn detail ml-2 "
+                           data-id="{{ ex.medical_bill_id }}"
+                           href="/nurse/payment/{{ ex.medical_bill_id }}">
+                            Xem chi tiết
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+
+</script>
+{% endblock %}

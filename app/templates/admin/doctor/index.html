@@ -1,0 +1,9 @@
+{% extends 'admin/index.html' %}
+
+{% block body %}
+{% if current_user.is_authenticated %}
+<h1>WELCOME {{ current_user.fullname }}</h1>
+{% else %}
+<h2>No login</h2>
+{% endif %}
+{%  endblock %}

@@ -1,0 +1,117 @@
+<style>
+    .custom-header {
+    background: linear-gradient(135deg, #4CAF50, #2C3E50);
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-img .logo-img {
+    max-width: 100px;
+    height: auto;
+}
+
+.nav-list {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-list li a {
+    color: black;
+    text-decoration: none;
+    padding: 2px 5px;
+    border-radius: 5px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-list li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #FDD835;
+}
+
+.user-section .btn {
+    margin-left: 10px;
+    font-size: 14px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.user-section .btn-primary {
+    background: #007BFF;
+    color: black;
+    border: none;
+}
+
+.user-section .btn-secondary {
+    background: #6C757D;
+    color: #fff;
+    border: none;
+}
+
+.user-section .btn-danger {
+    background: #DC3545;
+    color: #fff;
+    border: none;
+}
+
+.user-section .btn-outline-primary,
+.user-section .btn-outline-secondary {
+    background: transparent;
+    border: 2px solid;
+    color: #fff;
+}
+
+.user-section .btn-outline-primary:hover {
+    background: #007BFF;
+    color: #fff;
+}
+
+.user-section .btn-outline-secondary:hover {
+    background: #6C757D;
+    color: #fff;
+}
+
+</style>
+<header class="custom-header">
+    <div id="nav-head" class="header-nav">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Logo Section -->
+                <div class="col-lg-2 col-md-3 col-6 nav-img">
+                    <a href="/">
+                        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="logo-img">
+                    </a>
+                    <a data-toggle="collapse" data-target="#menu" href="#menu">
+                        <i class="fas d-block d-md-none small-menu fa-bars"></i>
+                    </a>
+                </div>
+
+                <!-- Navigation Menu -->
+                <div id="menu" class="col-lg-7 col-md-7 d-none d-md-block nav-item">
+                    <ul class="nav-list">
+                        <li><a href="/">Trang chủ</a></li>
+                        <li><a href="/about-us">Giới thiệu</a></li>
+                        <li><a href="/services">Dịch vụ</a></li>
+                        <li><a href="/news">Tin tức</a></li>
+                        <li><a href="/contact">Liên hệ</a></li>
+                    </ul>
+                </div>
+
+                <!-- User Section -->
+                <div class="col-lg-3 col-md-5 d-flex justify-content-end align-items-center user-section">
+                    {% if current_user.is_authenticated %}
+                    <a href="/registration-form" class="btn btn-primary">Đặt lịch khám</a>
+                    <a href="/history" class="btn btn-secondary">Lịch sử</a>
+                    <a href="/logout" class="btn btn-danger">Đăng xuất</a>
+                    {% else %}
+                    <a href="/login" class="btn btn-outline-primary" style="color: #007BFF;">Đăng nhập</a>
+                    <a href="/register" class="btn btn-outline-secondary" style="color: #007BFF;">Đăng ký</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,40 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+
+<div class="page-nav no-margin">
+    <h1 class="text-primary">Dữ Liệu Khám Bệnh</h1>
+</div>
+<div class="container">
+    <h2>Bệnh nhân {{current_user.fullname}}</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Ngày khám</th>
+            <th>Triệu chứng</th>
+            <th>Dự đoán bệnh</th>
+            <th>Bác sĩ khám</th>
+            <th>Tiền thuốc</th>
+            <th>Tiền khám</th>
+            <th>Chi tiết</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bill in examination_bills %}
+        <tr>
+            <td>{{ bill.examination_date }}</td>
+            <td>{{ bill.medical_bill.symptom }}</td>
+            <td>{{ bill.medical_bill.disease_prediction }}</td>
+            <td>{{ bill.medical_bill.doctor.fullname }}</td>
+            <td>{{ bill.medicine_money }} VNĐ</td>
+            <td>{{ bill.examination_money }} VNĐ</td>
+            <td>
+                <button class="btn btn-primary detail-btn" data-id="1">Chi tiết hóa đơn</button>
+            </td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

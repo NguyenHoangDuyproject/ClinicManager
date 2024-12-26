@@ -1,0 +1,62 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="page-nav no-margin row">
+    <div class="container">
+        <div class="row">
+            <h2>Giới thiệu</h2>
+            <ul>
+                <li><a href="/"><i class="fas fa-home"></i>Trang chủ</a></li>
+                <li><i class="fas fa-angle-double-right"></i>Giới thiệu</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<section class="with-medical">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 txtr pt-2">
+                <h4>Tại sao nên chọn phòng khám của chúng tôi <br>
+                    <span>Phòng mạch</span>
+                </h4>
+                <p><strong>Các bác sĩ tốt nhất:</strong> Đội ngũ bác sĩ của chúng tôi đều được đào tạo chuyên sâu, có nhiều năm kinh nghiệm và luôn tận tâm với từng bệnh nhân. Chúng tôi tự hào mang đến sự chăm sóc sức khỏe tối ưu.</p>
+                <p><strong>Dịch vụ tuyệt vời nhất:</strong> Phòng khám được trang bị đầy đủ các thiết bị hiện đại, đáp ứng mọi nhu cầu khám chữa bệnh một cách chuyên nghiệp và nhanh chóng.</p>
+                <p><strong>Không gian thoải mái:</strong> Với thiết kế không gian rộng rãi, sạch sẽ và hiện đại, chúng tôi luôn mong muốn đem lại cảm giác dễ chịu nhất cho mọi bệnh nhân khi đến khám.</p>
+                <p><strong>Quy trình đơn giản:</strong> Hệ thống đặt lịch khám online dễ sử dụng, giúp bạn tiết kiệm thời gian và không phải chờ đợi lâu.</p>
+                <p><strong>Chi phí hợp lý:</strong> Chúng tôi luôn cam kết mức chi phí phù hợp với tất cả bệnh nhân, đảm bảo dịch vụ tốt nhất với giá cả phải chăng.</p>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <img src="{{ url_for('static', filename='images/why.jpg') }}" alt="Lý do chọn phòng khám" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mission-vision" style="margin: 10px;">
+    <div class="container">
+        <div class="row">
+            <!-- Mission Section -->
+            <div class="col-lg-6 col-md-12">
+                <h4>Sứ mệnh của chúng tôi</h4>
+                <p>Đặt sức khỏe và sự hài lòng của bệnh nhân lên hàng đầu, chúng tôi không ngừng cải tiến và phát triển dịch vụ y tế nhằm mang đến sự chăm sóc toàn diện, chuyên nghiệp và tận tâm nhất.</p>
+                <ul>
+                    <li>Luôn lắng nghe và thấu hiểu nhu cầu của bệnh nhân.</li>
+                    <li>Đầu tư công nghệ và trang thiết bị y tế hiện đại.</li>
+                    <li>Xây dựng đội ngũ chuyên môn giỏi, đầy đủ kinh nghiệm.</li>
+                </ul>
+            </div>
+            <!-- Vision Section -->
+            <div class="col-lg-6 col-md-12">
+                <h4>Tầm nhìn</h4>
+                <p>Trở thành một trong những phòng khám hàng đầu tại Việt Nam, mang lại sự tin cậy và hài lòng tuyệt đối cho bệnh nhân thông qua chất lượng dịch vụ và sự chuyên nghiệp.</p>
+                <ul>
+                    <li>Phát triển mạng lưới phòng khám tại nhiều địa điểm.</li>
+                    <li>Cải thiện dịch vụ chăm sóc khách hàng.</li>
+                    <li>Đóng góp tích cực vào việc nâng cao sức khỏe cộng đồng.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
